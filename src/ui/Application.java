@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import log.Logging;
+import logic.ClientLogic;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.Level;
@@ -21,6 +22,7 @@ public class Application {
 	public static String LOG_FOLDER = "logs";
 	public static String LOG_FILE = "client.log";
 	public static Logger logger;
+	public static ClientLogic clientLogic = new ClientLogic();
 	
 	/**
 	 * The main entry point for the application.
