@@ -33,13 +33,13 @@ public class Application {
 		try {
 			Logging logging = new Logging();
 			logger = logging.getLogger();
-			logger.info("New echoClient session created.");
+			logger.info("New echoClient session created.");		
+			
+			/* Run Shell */
+			Shell shell = new Shell();
+			shell.displayShell();
 		} catch (IOException ex) {
-			System.out.println("Unable to create logger. Error: " + ex.getMessage());
+			System.out.println("Unable to create logger. Exiting Application. Error: " + ex.getMessage());
 		}
-		
-		/* Run Shell */
-		Shell shell = new Shell();
-		shell.displayShell();
 	}
 }

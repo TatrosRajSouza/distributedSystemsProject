@@ -21,7 +21,7 @@ public class Shell {
 	}
 	
 	/**
-	 * Displays the client shell, awaiting and processing user inputs.
+	 * Main Loop. Displays the client shell, awaiting and processing user inputs.
 	 */
 	public void displayShell() {
 		try {
@@ -45,11 +45,17 @@ public class Shell {
 		String[] tokens = input.trim().split("\\s+");
 		
 		if (tokens != null) {
-			if (tokens.length == 2  && tokens[0].equals("help") 
-					&& tokens[1].equals("send")) {
-				System.out.println("Syntax: <send> <textmessage>\n"
-						+ "Will send the given message to the currently connected echo server");
-			} 
+			if (tokens.length == 2  && tokens[0].equals("help")) {
+				if (tokens[1].equals("send")) {
+					System.out.println("Syntax: <send> <textmessage>\n"
+							+ "Will send the given message to the currently connected echo server");
+				} else if (tokens[1].equals("connect")) {
+					System.out.println("Syntax: <connect> <address> <port>\n"
+							+ "  <address>: Hostname or IP Address of the Server.\n"
+							+ "  <port>: The port of the echo service on the respective server.\n"
+							+ "  Connects to the given server at the specified port.");
+				}
+			}
 		}
 	}
 		
