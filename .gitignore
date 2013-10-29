@@ -6,4 +6,5 @@ MANIFEST.MF
 echoClient.jar
 target/
 /bin/
+logs/client.log
 *~
