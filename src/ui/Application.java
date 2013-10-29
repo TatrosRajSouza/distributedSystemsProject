@@ -6,7 +6,7 @@ import org.apache.log4j.BasicConfigurator;
 public class Application {
 
 	private static final Logger logger = Logger.getLogger(Application.class);
-	// Test
+	// Test test
 	public static void main(String[] args) {
 		BasicConfigurator.configure();
     	logger.debug("Hello world.");
