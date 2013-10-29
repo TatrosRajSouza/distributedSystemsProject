@@ -42,6 +42,11 @@ public class Logging {
 		return this.logger;
 	}
 	
+	/**
+	 * Clear the contents of log file
+	 * @param name name of the file to clear
+	 * @throws IOException
+	 */
 	public void cleanLogFile(String name) throws IOException {
 		File file = new File(name);
 		PrintWriter writer = new PrintWriter(file);
