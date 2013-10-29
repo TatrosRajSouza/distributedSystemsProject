@@ -9,6 +9,7 @@ import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import org.apache.log4j.PropertyConfigurator;
 
 import ui.Application;
 import ui.SimpleLayout;
@@ -30,14 +31,7 @@ public class Logging {
 	public Logging() throws IOException {
 		/* Initialize Logging */
 		logger = Logger.getLogger(Application.class.getName());
-		logger.setLevel(Level.ALL);
-		SimpleLayout sL = new SimpleLayout();
-		ConsoleAppender cA = new ConsoleAppender(sL);
-		logger.addAppender(cA);
-		
-		PatternLayout pLayout = new PatternLayout(pattern);
-		FileAppender fA = new FileAppender(pLayout, Application.LOG_FOLDER + "/" + Application.LOG_FILE, true);
-		logger.addAppender(fA);
+		PropertyConfigurator.configure("logs/log.config");
 	}
 	
 	/**
