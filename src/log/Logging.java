@@ -4,15 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.FileAppender;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
 import org.apache.log4j.PropertyConfigurator;
 
 import ui.Application;
-import ui.SimpleLayout;
 
 /**
  * Handles the logging for the application
@@ -21,7 +16,6 @@ import ui.SimpleLayout;
  */
 public class Logging {
 
-	private String pattern = "%d{ISO8601} %-5p [%t] %c: %m%n";
 	private Logger logger;
 	
 	/**
