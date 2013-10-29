@@ -37,6 +37,9 @@ public class Application {
 			shell.displayShell();
 		} catch (IOException ex) {
 			System.out.println("Unable to create logger. Exiting Application. Error: " + ex.getMessage());
+		} catch (Exception ex) {
+			System.out.println("FATAL ERROR. Exiting Application. Check log for details.");
+			Application.logger.fatal("Application terminated due to fatal error: " + ex.getMessage() + "\nStacktrace: " + ex.getStackTrace());
 		}
 	}
 }

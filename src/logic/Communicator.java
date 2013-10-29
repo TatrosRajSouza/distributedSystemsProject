@@ -5,16 +5,21 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import ui.Application;
+
 public class Communicator {
 	
-	public void marshall(String sendMsg, Socket socket) throws IOException
-	{		
+	public void marshall(String sendMsg, Socket socket) throws IOException {		
 		byte[] sendByte = sendMsg.getBytes();
+		Application.logger.debug("Size of Message: " + sendByte.length + " Bytes");
+		if (sendByte.length > 128*1024) {
+			throw new IllegalArgumentException("The message was too long. (" + sendByte.length + " kB). Maximum allowed is 128 kB.");
+		}
 		OutputStream out = socket.getOutputStream();
 		out.write(sendByte);
 	}
-	public String unmarshall(Socket socket) throws IOException
-	{
+	
+	public String unmarshall(Socket socket) throws IOException {
 		String message;
 		InputStream in = socket.getInputStream();
 		byte[] receivedByte = new byte[1024];

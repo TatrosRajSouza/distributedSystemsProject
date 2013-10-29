@@ -3,6 +3,7 @@ package ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.util.regex.Matcher;
@@ -42,7 +43,7 @@ public class Shell {
 			}
 		} catch (IOException ex) {
 			Application.logger.error("An IO Error occured: " + ex.getMessage());
-		}
+		} 
 	}
 
 	/**
@@ -165,8 +166,6 @@ public class Shell {
 			String message = Application.clientLogic.connect(tokens[1], port);
 			if (message != null) {
 				System.out.println(message);
-			} else {
-				System.out.println("Error! Not connected!");
 			}
 		} else {
 			System.out.println("Unknown ip adress or port.");
