@@ -1,6 +1,8 @@
 package log;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.FileAppender;
@@ -44,5 +46,12 @@ public class Logging {
 	 */
 	public Logger getLogger() {
 		return this.logger;
+	}
+	
+	public void cleanLogFile(String name) throws IOException {
+		File file = new File(name);
+		PrintWriter writer = new PrintWriter(file);
+		writer.print("");
+		writer.close();
 	}
 }

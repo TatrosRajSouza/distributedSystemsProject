@@ -1,6 +1,1 @@
-2013-10-29 14:31:58,242 INFO  [main] ui.Application: Shell Created.
-2013-10-29 14:35:30,433 INFO  [main] ui.Application: Shell Created.
-2013-10-29 14:35:35,645 ERROR [main] ui.Application: An IO Error occured: hello
-2013-10-29 14:44:34,490 INFO  [main] ui.Application: New echoClient session created.
-2013-10-29 14:44:34,491 INFO  [main] ui.Application: Shell Created.
-2013-10-29 14:44:40,495 ERROR [main] ui.Application: An IO Error occured: hello
+2013-10-29 14:55:37,172 INFO  [main] ui.Application: Shell Created.
