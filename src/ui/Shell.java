@@ -8,6 +8,8 @@ import java.nio.charset.CharsetEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Level;
+
 /**
  * A basic shell for the user client.
  * @author Raj, Souza, Tatros
@@ -16,6 +18,7 @@ import java.util.regex.Pattern;
 public class Shell {
 	private BufferedReader userInput;
 	private CharsetEncoder asciiEncoder;
+	private boolean quit;
 	/**
 	 * Creates a new shell.
 	 */
@@ -30,10 +33,10 @@ public class Shell {
 	 */
 	public void displayShell() {
 		try {
-			boolean quit = false;
+			quit = false;
 
 			while (!quit) {
-				System.out.print("Client> ");
+				System.out.print("EchoClient> ");
 				String input = userInput.readLine();
 				processInput(input);
 			}
@@ -50,43 +53,50 @@ public class Shell {
 		String[] tokens = input.trim().split("\\s+");
 		boolean worked = true;
 
-		if (tokens != null) {
-			if (tokens.length == 3 && tokens[0].equals("connect")) {
-				checkConnect(tokens);
-			} else if (tokens.length == 2) {
-				if (tokens[0].equals("help")) {
-					checkHelp(tokens);
-				} else if (tokens[0].equals("logLevel")) {
-					checkLogLevel(tokens);
+		if (tokens[0].equals("quit")) {
+			Application.clientLogic.quit();
+			quit = true;
+		} else {
+			System.out.print("EchoClient> ");
+			if (tokens != null) {
+				if (tokens.length == 3 && tokens[0].equals("connect")) {
+					checkConnect(tokens);
+				} else if (tokens.length == 2) {
+					if (tokens[0].equals("help")) {
+						checkHelp(tokens);
+					} else if (tokens[0].equals("logLevel")) {
+						checkLogLevel(tokens);
+					} else {
+						worked = false;
+					}
+				} else if (tokens.length == 1) {
+					if (tokens[0].equals("help")) {
+						System.out.println("Syntax: <help> <command>\n"
+								+ "<command> List of commands.\n"
+								+ "(connect | disconnect | send | logLevel | help | quit)");
+					} else if (tokens[0].equals("disconnect")) {
+						String message = Application.clientLogic.disconnect();
+						System.out.println(message);
+					} else {
+						worked = false;
+					}
 				} else {
 					worked = false;
 				}
-			} else if (tokens.length == 1) {
-				if (tokens[0].equals("help")) {
-					System.out.println("Syntax: <help> <command>\n"
-							+ "<command> List of commands.\n"
-							+ "(connect | disconnect | send | logLevel | help | quit)");
-				} else if (tokens[0].equals("disconnect")) {
-					Application.clientLogic.disconnect();
-				} else if (tokens[0].equals("quit")) {
-					Application.clientLogic.quit();
-				} else {
-					worked = false;
-				}
-			} else {
-				worked = false;
-			}
 
-			if (tokens.length > 1 && tokens[0].equals("send")) {
-				String combinedTokens = combineTokens(tokens);
-				if (isASCII(combinedTokens)) {
-					Application.clientLogic.send(combinedTokens);
-				} else {
-					System.out.println("Cannot send non ASCII character.");
+				if (tokens.length > 1 && tokens[0].equals("send")) {
+					String combinedTokens = combineTokens(tokens);
+					String message = "";
+					if (isASCII(combinedTokens)) {
+						message = Application.clientLogic.send(combinedTokens);
+					} else {
+						message = "Cannot send non ASCII character.";
+					}
+					System.out.println(message);
+					worked = true;
+				} else if (!worked) {
+					printHelp();
 				}
-				worked = true;
-			} else if (!worked) {
-				printHelp();
 			}
 		}
 	}
@@ -97,9 +107,8 @@ public class Shell {
 		for (int i = 1; i < tokens.length; i++) {
 			combinedToken += tokens[i] + " ";
 		}
-		combinedToken.trim();
 
-		return combinedToken;
+		return combinedToken.trim() + "\r";
 	}
 
 	private boolean isASCII(String message) {
@@ -113,7 +122,8 @@ public class Shell {
 	private void checkLogLevel(String[] tokens) {
 		if (tokens[1].equals("ALL") || tokens[1].equals("DEBUG") || tokens[1].equals("INFO") || tokens[1].equals("WARN")
 				|| tokens[1].equals("ERROR")|| tokens[1].equals("FATAL") || tokens[1].equals("OFF")) {
-			Application.clientLogic.logLevel(tokens[1]);
+			Application.clientLogic.logLevel(Level.toLevel(tokens[1]));
+			System.out.println("Log level set to " + tokens[1]);
 		}
 		else {
 			printHelp();
@@ -152,7 +162,12 @@ public class Shell {
 		int port = Integer.parseInt(tokens[2]);
 
 		if (matcher.matches() && port >= 1 && port <= 65535) {
-			Application.clientLogic.connect(tokens[1], port);
+			String message = Application.clientLogic.connect(tokens[1], port);
+			if (message != null) {
+				System.out.println(message);
+			} else {
+				System.out.println("Error! Not connected!");
+			}
 		} else {
 			System.out.println("Unknown ip adress or port.");
 		}
