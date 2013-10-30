@@ -17,7 +17,7 @@ import ui.Application;
 public class Logging {
 
 	private Logger logger;
-	
+
 	/**
 	 * Creates the Logger and initializes its properties.
 	 * @throws IOException
@@ -27,7 +27,7 @@ public class Logging {
 		logger = Logger.getLogger(Application.class.getName());
 		PropertyConfigurator.configure("logs/log.config");
 	}
-	
+
 	/**
 	 * Returns the logger
 	 * @return The logger
@@ -35,7 +35,7 @@ public class Logging {
 	public Logger getLogger() {
 		return this.logger;
 	}
-	
+
 	/**
 	 * Clear the contents of log file
 	 * @param name name of the file to clear

@@ -12,11 +12,18 @@ public class ClientLogic {
 	private Socket socket;
 	private Connector connector;
 	private Communicator communicator;
-
+	/**
+	 * Initialise communicator
+	 */
 	public ClientLogic() {
 		communicator = new Communicator();
 	}
-
+	/**
+	 * Connect to the server
+	 * @param ipAddress
+	 * @param port
+	 * @return
+	 */
 	public String connect(String ipAddress, int port) {
 		if (!isConnected) {
 			connector = new Connector();
@@ -33,7 +40,10 @@ public class ClientLogic {
 			return "Already connected. Use disconnect first.";
 		}
 	}
-
+	/**
+	 * Disconnect from the server
+	 * @return
+	 */
 	public String disconnect() {
 		if (isConnected) {
 			return connector.disconnect(socket);
@@ -42,7 +52,11 @@ public class ClientLogic {
 			return "You are not connected yet.";
 		}
 	}
-	
+	/**
+	 * send message to server
+	 * @param message
+	 * @return
+	 */
 	public String send(String message) {
 		String receivedMsg = null;
 		try {
@@ -60,22 +74,27 @@ public class ClientLogic {
 		} catch (IOException e) {
 			Application.logger.error("An IO error occurred while sending a message. Please try again.");
 		}
-		
+
 		if (receivedMsg == null) {
 			Application.logger.error("No message was received.");
 			return "No message was received from the server.";
 		}
 		return receivedMsg;
 	}
-
+	/**
+	 * disconnect from the server
+	 */
 	public void quit() {
 		if (isConnected) {
 			disconnect();
 		}
-		
+
 		Application.logger.info("Application terminated by user.");
 	}
-
+	/**
+	 * set log level
+	 * @param level
+	 */
 	public void logLevel(Level level) {
 		Application.logger.setLevel(level);
 		Application.logger.info("LogLevel set to " + level.toString());

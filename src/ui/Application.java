@@ -31,7 +31,7 @@ public class Application {
 			logging.cleanLogFile(LOG_FOLDER + "/" + LOG_FILE);
 			logger = logging.getLogger();
 			logger.info("New echoClient session created.");		
-			
+
 			/* Run Shell */
 			Shell shell = new Shell();
 			shell.displayShell();

@@ -11,11 +11,17 @@ import ui.Application;
 
 public class Connector {
 	private String receivedMessage = "";
-	
+	/**
+	 * connect to the server
+	 * @param ipAddress
+	 * @param port
+	 * @param communicator
+	 * @return
+	 */
 	public Socket connect(String ipAddress, int port, Communicator communicator) {
 		Socket socket = null;
 		try {
-			System.out.println(ipAddress + ": " + port);
+			//System.out.println(ipAddress + ": " + port);
 			socket = new Socket(ipAddress, port);
 			receivedMessage = communicator.unmarshall(socket);
 			Application.logger.info("Connected to " + ipAddress + " : " + port);
@@ -35,7 +41,11 @@ public class Connector {
 		}
 		return socket;
 	}
-	
+	/**
+	 * disconnect from the server
+	 * @param socket
+	 * @return
+	 */
 	public String disconnect(Socket socket) {
 		String message = "";
 		String address = "";
@@ -51,7 +61,7 @@ public class Connector {
 		}
 		return message;
 	}
-	
+
 	public String getReceivedMessage() {
 		Application.logger.debug("Received handshake message: " + receivedMessage);
 		return receivedMessage;
