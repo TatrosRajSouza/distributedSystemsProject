@@ -5,8 +5,6 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import org.apache.log4j.Priority;
-
 import ui.Application;
 
 public class Connector {
