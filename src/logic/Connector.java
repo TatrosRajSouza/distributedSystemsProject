@@ -7,14 +7,20 @@ import java.net.UnknownHostException;
 
 import ui.Application;
 
+/**
+ * Responsible for establishing and terminating remote connections 
+ * @author Raj, Souza, Tatros
+ *
+ */
 public class Connector {
 	private String receivedMessage = "";
+	
 	/**
-	 * connect to the server
-	 * @param ipAddress
-	 * @param port
-	 * @param communicator
-	 * @return
+	 * Establish a connection
+	 * @param ipAddress The IP Address of the server to connect to
+	 * @param port The remote port used for the connection
+	 * @param communicator The communicator instance used for exchange of messages
+	 * @return The socket used for communication
 	 */
 	public Socket connect(String ipAddress, int port, Communicator communicator) {
 		Socket socket = null;
@@ -39,10 +45,11 @@ public class Connector {
 		}
 		return socket;
 	}
+	
 	/**
 	 * disconnect from the server
-	 * @param socket
-	 * @return
+	 * @param socket The socket used for communication
+	 * @return Success or error message
 	 */
 	public String disconnect(Socket socket) {
 		String message = "";
@@ -60,6 +67,10 @@ public class Connector {
 		return message;
 	}
 
+	/**
+	 * Obtain the handshake message received from the server after successful connection
+	 * @return the message as a string
+	 */
 	public String getReceivedMessage() {
 		Application.logger.debug("Received handshake message: " + receivedMessage);
 		return receivedMessage;

@@ -7,11 +7,17 @@ import java.net.Socket;
 
 import ui.Application;
 
+/**
+ * Handles the exchange of messages as byte streams between client and server over a socket 
+ * @author Raj, Tatros, Souza
+ *
+ */
 public class Communicator {
+	
 	/**
 	 * Converts string into stream of bytes and send it to the server
-	 * @param sendMsg
-	 * @param socket
+	 * @param sendMsg The message that should be transmitted
+	 * @param socket The socket used for communication
 	 * @throws IOException
 	 */
 	public void marshall(String sendMsg, Socket socket) throws IOException {		
@@ -23,10 +29,11 @@ public class Communicator {
 		OutputStream out = socket.getOutputStream();
 		out.write(sendByte);
 	}
+	
 	/**
-	 * converts stream of bytes from the server to string
-	 * @param socket
-	 * @return
+	 * Receives stream of bytes from the server and converts it into a String
+	 * @param socket The socket used for communication
+	 * @return The message received from the server as a String
 	 * @throws IOException
 	 */
 	public String unmarshall(Socket socket) throws IOException {
