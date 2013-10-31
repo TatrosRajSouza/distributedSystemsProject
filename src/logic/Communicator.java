@@ -17,7 +17,7 @@ public class Communicator {
 	public void marshall(String sendMsg, Socket socket) throws IOException {		
 		byte[] sendByte = sendMsg.getBytes();
 		Application.logger.debug("Size of Message: " + sendByte.length + " Bytes");
-		if (sendByte.length > 1024) {
+		if (sendByte.length > 128 * 1024) {
 			throw new IllegalArgumentException("The message was too long. (" + sendByte.length + " kB). Maximum allowed is 128 kB.");
 		}
 		OutputStream out = socket.getOutputStream();
