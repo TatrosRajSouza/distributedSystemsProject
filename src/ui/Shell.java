@@ -100,7 +100,11 @@ public class Shell {
 			}
 		}
 	}
-
+	/**
+	 * 
+	 * @param tokens
+	 * @return combined string with added carriage return in the end
+	 */
 	private String combineTokens(String[] tokens) {
 		String combinedToken = "";
 
@@ -110,15 +114,24 @@ public class Shell {
 
 		return combinedToken.trim() + "\r";
 	}
-
+	/**
+	 * Check the message contains only ascii
+	 * @param message
+	 * @return boolean
+	 */
 	private boolean isASCII(String message) {
 		return asciiEncoder.canEncode(message);
 	}
-
+	/**
+	 * print instructions to the user
+	 */
 	private void printHelp() {
 		System.out.println("Unknown command. Use 'help' for list of commands.");
 	}
-
+	/**
+	 * Apply log level to the logger
+	 * @param tokens
+	 */
 	private void checkLogLevel(String[] tokens) {
 		if (tokens[1].equals("ALL") || tokens[1].equals("DEBUG") || tokens[1].equals("INFO") || tokens[1].equals("WARN")
 				|| tokens[1].equals("ERROR")|| tokens[1].equals("FATAL") || tokens[1].equals("OFF")) {
@@ -129,7 +142,10 @@ public class Shell {
 			printHelp();
 		}
 	}
-
+	/**
+	 * print help manual for each command
+	 * @param tokens
+	 */
 	private void checkHelp(String[] tokens) {
 		if (tokens[1].equals("send")) {
 			System.out.println("Syntax: <send> <textmessage>\n"
@@ -151,7 +167,10 @@ public class Shell {
 			printHelp();
 		}
 	}
-
+	/**
+	 * Validate ip,port and connect to server
+	 * @param tokens
+	 */
 	private void checkConnect(String[] tokens) {
 		final String IPADDRESS_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
@@ -165,6 +184,10 @@ public class Shell {
 			String message = Application.clientLogic.connect(tokens[1], port);
 			if (message != null) {
 				System.out.println(message);
+			}
+			else
+			{
+				System.out.println("Server is not reachable. Check Your internet connection/Retry later");
 			}
 		} else {
 			System.out.println("Unknown ip adress or port.");
