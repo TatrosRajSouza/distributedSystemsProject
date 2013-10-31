@@ -32,7 +32,7 @@ public class Communicator {
 	public String unmarshall(Socket socket) throws IOException {
 		String message;
 		InputStream in = socket.getInputStream();
-		byte[] receivedByte = new byte[1024];
+		byte[] receivedByte = new byte[128 * 1024];
 		in.read(receivedByte);
 		message = new String(receivedByte);
 		return message.trim();
