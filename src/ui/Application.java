@@ -20,13 +20,11 @@ public class Application {
 
 	/**
 	 * The main entry point for the application.
-	 * @param args
-	 * @throws IOException
+	 * @param args no command line arguments supported currently
 	 */
 	public static void main(String[] args) {
-
-		/* Initialize Logging */
 		try {
+			/* Initialize Logging */
 			Logging logging = new Logging();
 			logging.cleanLogFile(LOG_FOLDER + "/" + LOG_FILE);
 			logger = logging.getLogger();

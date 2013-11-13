@@ -7,22 +7,29 @@ import org.apache.log4j.Level;
 
 import ui.Application;
 
+/**
+ * Handles the application logic.
+ * @author Raj, Souza, Tatros
+ *
+ */
 public class ClientLogic {
 	private static boolean isConnected = false;
 	private Socket socket;
 	private Connector connector;
 	private Communicator communicator;
+	
 	/**
-	 * Initialise communicator
+	 * Creates new Logic, Initializes communicator
 	 */
 	public ClientLogic() {
 		communicator = new Communicator();
 	}
+	
 	/**
 	 * Connect to the server
-	 * @param ipAddress
-	 * @param port
-	 * @return
+	 * @param ipAddress IPv4 address to connect to
+	 * @param port Valid remote port number
+	 * @return Received message as String if successful, or error message otherwise
 	 */
 	public String connect(String ipAddress, int port) {
 		if (!isConnected) {
@@ -40,9 +47,10 @@ public class ClientLogic {
 			return "Already connected. Use disconnect first.";
 		}
 	}
+	
 	/**
 	 * Disconnect from the server
-	 * @return
+	 * @return Success message or error message in case of failure
 	 */
 	public String disconnect() {
 		if (isConnected) {
@@ -52,10 +60,11 @@ public class ClientLogic {
 			return "You are not connected yet.";
 		}
 	}
+	
 	/**
 	 * send message to server
-	 * @param message
-	 * @return
+	 * @param message The message that should be transmitted to the server
+	 * @return Response received from server
 	 */
 	public String send(String message) {
 		String receivedMsg = null;
@@ -81,8 +90,9 @@ public class ClientLogic {
 		}
 		return receivedMsg;
 	}
+	
 	/**
-	 * disconnect from the server
+	 * Exit application and close open connection
 	 */
 	public void quit() {
 		if (isConnected) {
@@ -91,29 +101,39 @@ public class ClientLogic {
 
 		Application.logger.info("Application terminated by user.");
 	}
+	
 	/**
-	 * set log level
-	 * @param level
+	 * set the log level for the log4j logger
+	 * @param level A log4j logLevel
 	 */
 	public void logLevel(Level level) {
 		Application.logger.setLevel(level);
 		Application.logger.info("LogLevel set to " + level.toString());
 	}
 
-
-
+	/**
+	 * Set the connection status
+	 * @param bool The current connection status
+	 */
 	public static void setIsConnected(boolean bool) {
 		ClientLogic.isConnected = bool;
 		Application.logger.debug("isConnected set to " + bool);
 	}
 
+	/**
+	 * Set the socket that is used for communication
+	 * @param socket
+	 */
 	public void setSocket(Socket socket) {
 		this.socket = socket;
 		Application.logger.debug("New socket was set.");
 	}
 
+	/**
+	 * Obtain the socket used for communication
+	 * @return The socket used for communication
+	 */
 	public Socket getSocket() {
 		return this.socket;
 	}
-
 }

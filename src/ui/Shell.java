@@ -19,6 +19,7 @@ public class Shell {
 	private BufferedReader userInput;
 	private CharsetEncoder asciiEncoder;
 	private boolean quit;
+	
 	/**
 	 * Creates a new shell.
 	 */
@@ -60,7 +61,14 @@ public class Shell {
 			System.out.print("EchoClient> ");
 			if (tokens != null) {
 				if (tokens.length == 3 && tokens[0].equals("connect")) {
-					checkConnect(tokens);
+					try {
+						if (!checkConnect(tokens)) {
+							Application.logger.warn("Connection attempt failed.");
+						}
+					} catch (NumberFormatException ex) {
+						Application.logger.error("Invalid parameter was passed to connect. Port must be a number.");
+						System.out.println("Please make sure the port is valid.");
+					}
 				} else if (tokens.length == 2) {
 					if (tokens[0].equals("help")) {
 						checkHelp(tokens);
@@ -72,7 +80,7 @@ public class Shell {
 				} else if (tokens.length == 1) {
 					if (tokens[0].equals("help")) {
 						System.out.println("Syntax: <help> <command>\n"
-								+ "<command> List of commands.\n"
+								+ "List of commands: "
 								+ "(connect | disconnect | send | logLevel | help | quit)");
 					} else if (tokens[0].equals("disconnect")) {
 						String message = Application.clientLogic.disconnect();
@@ -100,9 +108,10 @@ public class Shell {
 			}
 		}
 	}
+	
 	/**
 	 * 
-	 * @param tokens
+	 * @param tokens user input tokens
 	 * @return combined string with added carriage return in the end
 	 */
 	private String combineTokens(String[] tokens) {
@@ -114,23 +123,26 @@ public class Shell {
 
 		return combinedToken.trim() + "\r";
 	}
+	
 	/**
-	 * Check the message contains only ascii
-	 * @param message
-	 * @return boolean
+	 * Check the message contains only ascii characters
+	 * @param message The input to check
+	 * @return boolean true if the message is ascii only
 	 */
 	private boolean isASCII(String message) {
 		return asciiEncoder.canEncode(message);
 	}
+	
 	/**
 	 * print instructions to the user
 	 */
 	private void printHelp() {
 		System.out.println("Unknown command. Use 'help' for list of commands.");
 	}
+	
 	/**
 	 * Apply log level to the logger
-	 * @param tokens
+	 * @param tokens A list of user input tokens
 	 */
 	private void checkLogLevel(String[] tokens) {
 		if (tokens[1].equals("ALL") || tokens[1].equals("DEBUG") || tokens[1].equals("INFO") || tokens[1].equals("WARN")
@@ -142,9 +154,10 @@ public class Shell {
 			printHelp();
 		}
 	}
+	
 	/**
 	 * print help manual for each command
-	 * @param tokens
+	 * @param tokens An array of user input tokens
 	 */
 	private void checkHelp(String[] tokens) {
 		if (tokens[1].equals("send")) {
@@ -158,20 +171,25 @@ public class Shell {
 		} else if (tokens[1].equals("disconnect")) {
 			System.out.println("Syntax: <disconnect>\n"
 					+ "Tries to disconnect from the connected server.");
-		} else if (tokens[1].equals("disconnect")) {
+		} else if (tokens[1].equals("logLevel")) {
 			System.out.println("Syntax: <logLevel> <level>\n"
 					+ "  <level>: One of the following log4j log levels: "
 					+ "(ALL | DEBUG | INFO | WARN | ERROR | FATAL | OFF)"
 					+ "Sets the logger to the specified log level");
+		} else if (tokens[1].equals("quit")) {
+			System.out.println("Syntax: <quit>\n"
+					+ "Close connection and exit the application.");
 		} else {
 			printHelp();
 		}
 	}
+	
 	/**
 	 * Validate ip,port and connect to server
-	 * @param tokens
+	 * @param tokens A list of user input tokens
+	 * @return True if connection successful, false otherwise
 	 */
-	private void checkConnect(String[] tokens) {
+	private boolean checkConnect(String[] tokens) throws NumberFormatException {
 		final String IPADDRESS_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
@@ -184,14 +202,16 @@ public class Shell {
 			String message = Application.clientLogic.connect(tokens[1], port);
 			if (message != null) {
 				System.out.println(message);
+				return true;
 			}
 			else
 			{
 				System.out.println("Server is not reachable. Check Your internet connection/Retry later");
+				return false;
 			}
 		} else {
 			System.out.println("Unknown ip adress or port.");
+			return false;
 		}
 	}
-
 }
