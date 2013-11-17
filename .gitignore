@@ -8,4 +8,8 @@ target/
 */bin/
 */logs/
 logs/client.log
+*/CLIENT_MANIFEST.MF
+*/SERVER_MANIFEST.MF
+*/ms2-client.jar
+*/ms2-server.jar
 *~
