@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
 
+import ui.Application;
+
 /**
  * A basic shell for the user client.
  * @author Raj, Souza, Tatros
